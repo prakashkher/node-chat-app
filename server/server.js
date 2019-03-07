@@ -18,19 +18,28 @@ var io = socketIO(server);
 
 io.on('connection',(socket)=>{
     console.log('New User connected');
+    socket.emit('newMessage',{
+        from:'Admin',
+        text:'Hello, Welcome to  Chat room',
+        createdAt:new Date().getTime()
+    });
 
-socket.emit('newMessage',{
-    from:'user1',
-    text:'Hello',
-    createdAt:123444
-});
+    socket.broadcast.emit('newMessage',{
+        from:'Admin',
+        text:'New user joined',
+        createdAt:new Date().getTime()
+    });
 
     socket.on('disconnect',()=>{
         console.log('User disconnected');
     });
 
     socket.on('createMessage',(msg)=>{
-        console.log('msg:',msg);
+        socket.broadcast.emit('newMessage',{
+            from:msg.from,
+            text:msg.text,
+            createdAt:new Date().getTime()
+        });
     });
 });
 
