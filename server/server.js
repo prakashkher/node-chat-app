@@ -28,8 +28,14 @@ io.on('connection',(socket)=>{
         console.log('User disconnected');
     });
 
-    socket.on('createMessage',(msg)=>{
+    socket.on('createMessage',(msg,callback)=>{
         socket.broadcast.emit('newMessage',message.generateMessage(msg.from,msg.text));
+        callback();
+    });
+
+    socket.on('sendLocation',(coords)=>{
+        console.log('sendLocation');
+        socket.broadcast.emit('newLocationMessage',message.generateLocationMessage(coords.from,coords.lat,coords.lng));
     });
 });
 

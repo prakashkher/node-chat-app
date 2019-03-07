@@ -2,11 +2,31 @@
 
 <head>
 
+    <link rel="stylesheet" href="/css/styles.css">
 
 </head>
-<body>
-<p>Welcome to Chat app</p>
+<body class="chat">
+
+    <div class="chat__sidebar">
+        <h3>People</h3>
+        <div id="users"></div>
+    </div>
+
+    <div class="chat__main">
+        <ol id = "messages" class="chat__messages"></ol>
+        <div class="chat__footer">
+            <form id="message-form">
+            <input type="text" name="message" />
+            <button type="submit" >Send</button>
+            </form>
+            <button id="send-location">Send Location</button>
+        </div>
+        
+    </div>
+
+
 <script src="socket.io/socket.io.js"></script>
+<script src = /js/lib/jquery-3.3.1.min.js></script>
 <script src="/js/index.js"></script>
 </body>
 </html>
