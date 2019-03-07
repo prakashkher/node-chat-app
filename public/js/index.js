@@ -13,9 +13,12 @@ socket.on('disconnect',function (){
 
 
 socket.on('newMessage',function(message){
-    console.log('New Message:',message);
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    var receivedAt = jQuery('<span></span>');
+    receivedAt.append(formattedTime); 
     var li = jQuery('<li></li>');
-    li.text(`${message.from} : ${message.text}`);
+    li.text(`${message.from} ${formattedTime}: ${message.text}`);
+    
     jQuery('#messages').append(li);
 });
 
@@ -49,10 +52,14 @@ locationBtn.on('click',function(){
 });
 
 socket.on('newLocationMessage',function (locationMessage){
+    var formattedTime = moment(locationMessage.createdAt).format('h:mm a');
+    var receivedAt = jQuery('<span></span>');
+    receivedAt.append(formattedTime); 
     var li = jQuery('<li></li>');
     var a = jQuery('<a target="_blank">My Location</a>');
     a.attr('href',locationMessage.url);
-    li.text(`${locationMessage.from}: `);
+    li.text(`${locationMessage.from} ${formattedTime}: `);
     li.append(a);
+   
     jQuery('#messages').append(li);
 });
