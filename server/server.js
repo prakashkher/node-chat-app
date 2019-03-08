@@ -29,7 +29,7 @@ io.on('connection',(socket)=>{
     });
 
     socket.on('createMessage',(msg,callback)=>{
-        socket.broadcast.emit('newMessage',message.generateMessage(msg.from,msg.text));
+        socket.emit('newMessage',message.generateMessage(msg.from,msg.text));
         callback();
     });
 
