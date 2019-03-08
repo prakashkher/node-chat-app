@@ -4,6 +4,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 
 const message = require('./utils/message');
+const {isString} = require('./utils/validation');
 
 var port = process.env.PORT || 3000;
 var publicPath = path.join(__dirname,'../public');
@@ -24,18 +25,25 @@ io.on('connection',(socket)=>{
 
     socket.broadcast.emit('newMessage',message.generateMessage('Admin','New user joined'));
 
+    socket.on('join',(params,callback)=>{
+        if(!isString(params.name) || !isString(params.room)){
+            callback('Name and Room Name are required');
+        }
+        callback();
+    })
+
     socket.on('disconnect',()=>{
         console.log('User disconnected');
     });
 
     socket.on('createMessage',(msg,callback)=>{
-        socket.emit('newMessage',message.generateMessage(msg.from,msg.text));
+        io.emit('newMessage',message.generateMessage(msg.from,msg.text));
         callback();
     });
 
     socket.on('sendLocation',(coords)=>{
         console.log('sendLocation');
-        socket.broadcast.emit('newLocationMessage',message.generateLocationMessage(coords.from,coords.lat,coords.lng));
+        io.emit('newLocationMessage',message.generateLocationMessage(coords.from,coords.lat,coords.lng));
     });
 });
 
