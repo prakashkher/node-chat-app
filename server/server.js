@@ -20,15 +20,15 @@ server.listen(port,()=>{
 var io = socketIO(server);
 
 io.on('connection',(socket)=>{
-    console.log('New User connected');
-    socket.emit('newMessage',message.generateMessage('Admin','Hello, Welcome to  Chat room'));
-
-    socket.broadcast.emit('newMessage',message.generateMessage('Admin','New user joined'));
-
+    
     socket.on('join',(params,callback)=>{
         if(!isString(params.name) || !isString(params.room)){
             callback('Name and Room Name are required');
         }
+        socket.join(params.room);
+        socket.emit('newMessage',message.generateMessage('Admin','Hello, Welcome to  Chat room'));
+        socket.broadcast.to(params.room).emit('newMessage',message.generateMessage('Admin',`${params.name} joined`));
+
         callback();
     })
 
