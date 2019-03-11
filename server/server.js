@@ -42,7 +42,7 @@ io.on('connection',(socket)=>{
         var user = userObject.removeUser(socket.id);
         if(user){
             io.to(user.room).emit('updateUsersList',userObject.getUserList(user.room));
-            io.emit('newMessage',message.generateMessage('Admin',`${user.name} has left`));
+            io.to(user.room).emit('newMessage',message.generateMessage('Admin',`${user.name} has left`));
         }
     });
 
