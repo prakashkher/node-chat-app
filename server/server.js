@@ -27,6 +27,7 @@ io.on('connection',(socket)=>{
         if(!isString(params.name) || !isString(params.room)){
             return callback('Name and Room Name are required');
         }
+        params.room = params.room.toUpperCase();
         socket.join(params.room);
         socket.emit('newMessage',message.generateMessage('Admin','Hello, Welcome to  Chat room'));
         socket.broadcast.to(params.room).emit('newMessage',message.generateMessage('Admin',`${params.name} has joined`));
