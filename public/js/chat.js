@@ -25,12 +25,21 @@ socket.on('connect',function (){
             window.location.href="/index.html";
         }
     });
+    socket.on('updateUsersList',function(users){
+        var usersDiv = jQuery('#users');
+        var ol = jQuery('<ol></ol>');
+        users.forEach(function(user){
+            ol.append(jQuery('<li></li>').text(user));
+        });
+        usersDiv.html(ol);
+    });
 
-    
 });
 
+
+
 socket.on('disconnect',function (){
-    console.log('disconnected from the server');
+    
 });
 
 
@@ -50,7 +59,7 @@ socket.on('newMessage',function(message){
 jQuery('#message-form').on('submit',function (e) {
     e.preventDefault();
     var messageTextbox = jQuery('[name=message]');
-    socket.emit('createMessage',{from:'User',text:messageTextbox.val()},function(){
+    socket.emit('createMessage',{text:messageTextbox.val()},function(){
         messageTextbox.val('');
     });
 });
@@ -65,7 +74,6 @@ locationBtn.on('click',function(){
     navigator.geolocation.getCurrentPosition(function(position){
         
         socket.emit('sendLocation',{
-            from:'User',
             lat:position.coords.latitude,
             lng:position.coords.longitude
         });
